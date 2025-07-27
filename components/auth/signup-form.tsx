@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,23 +12,25 @@ import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2, Users } from "lucide-react"
 
-export default function SignupForm() {
+interface SignupFormProps {
+  inviteFromUrl?: string | null
+}
+
+export default function SignupForm({ inviteFromUrl }: SignupFormProps) {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [inviteCode, setInviteCode] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
   const { toast } = useToast()
 
   useEffect(() => {
-    // Check for invite code in URL
-    const inviteFromUrl = searchParams.get("invite")
+    // Set invite code from URL prop
     if (inviteFromUrl) {
       setInviteCode(inviteFromUrl.toUpperCase())
     }
-  }, [searchParams])
+  }, [inviteFromUrl])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,7 +83,7 @@ export default function SignupForm() {
       <CardHeader className="p-4 sm:p-6">
         <CardTitle className="text-white text-lg sm:text-xl">Create Account</CardTitle>
         <CardDescription className="text-slate-400 text-sm sm:text-base">
-          {inviteCode
+          {inviteFromUrl
             ? "Join DevDrill through your friend's invitation!"
             : "Join DevDrill and start your coding journey"}
         </CardDescription>
