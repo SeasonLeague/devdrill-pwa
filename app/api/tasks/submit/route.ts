@@ -7,6 +7,9 @@ import { taskSubmissionSchema, validateAndSanitizeInput, sanitizeCode, sanitizeM
 import { rateLimit, rateLimitConfigs } from "@/lib/rate-limiter"
 import { handleSecurityError, addSecurityHeaders } from "@/lib/security"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 const limiter = rateLimit(rateLimitConfigs.api)
 
 export async function POST(request: NextRequest) {

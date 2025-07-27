@@ -4,6 +4,9 @@ import { connectDB } from "@/lib/mongodb"
 import User from "@/models/User"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 export async function GET(request: NextRequest) {

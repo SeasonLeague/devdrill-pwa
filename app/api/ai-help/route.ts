@@ -1,9 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenerativeAI } from "@google-generative-ai"
 import { aiHelpSchema, validateAndSanitizeInput, sanitizeHtml } from "@/lib/validation"
 import { rateLimit, rateLimitConfigs } from "@/lib/rate-limiter"
 import { handleSecurityError, addSecurityHeaders } from "@/lib/security"
+
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 const limiter = rateLimit(rateLimitConfigs.aiHelp)

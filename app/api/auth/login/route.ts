@@ -5,6 +5,9 @@ import { loginSchema, validateAndSanitizeInput, sanitizeMongoInput } from "@/lib
 import { verifyPassword, createSecureJWT, handleSecurityError } from "@/lib/security"
 import { rateLimit, rateLimitConfigs } from "@/lib/rate-limiter"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 const limiter = rateLimit(rateLimitConfigs.auth)
 
 export async function POST(request: NextRequest) {

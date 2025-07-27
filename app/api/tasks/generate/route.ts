@@ -4,6 +4,9 @@ import { generateTask } from "@/lib/task-generator"
 import { connectDB } from "@/lib/mongodb"
 import User from "@/models/User"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 export async function POST(request: NextRequest) {
   try {
     const token = request.cookies.get("auth-token")?.value

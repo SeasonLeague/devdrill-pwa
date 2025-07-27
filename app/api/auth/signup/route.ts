@@ -5,6 +5,9 @@ import { signupSchema, validateAndSanitizeInput, sanitizeMongoInput, createSafeU
 import { hashPassword, createSecureJWT, handleSecurityError } from "@/lib/security"
 import { rateLimit, rateLimitConfigs } from "@/lib/rate-limiter"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 const limiter = rateLimit(rateLimitConfigs.auth)
 
 function generateInviteCode(): string {

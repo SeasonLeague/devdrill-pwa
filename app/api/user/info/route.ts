@@ -4,6 +4,9 @@ import { connectDB } from "@/lib/mongodb"
 import User from "@/models/User"
 import { z } from "zod"
 
+// Force dynamic rendering for this route
+export const dynamic = "force-dynamic"
+
 const userInfoSchema = z.object({
   age: z.number().min(13).max(120),
   gender: z.enum(["male", "female"]),
