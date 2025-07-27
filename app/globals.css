@@ -1,0 +1,482 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Base card styles - no tilt by default */
+.modern-card {
+  @apply relative bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.4), transparent);
+  transition: left 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.modern-card:hover::before {
+  left: 100%;
+}
+
+.modern-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Tilt effect ONLY for homepage feature cards */
+.feature-card {
+  @apply relative bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.4), transparent);
+  transition: left 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+.feature-card:hover {
+  transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2), 0 0 0 1px
+    rgba(59, 130, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.feature-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Animated Gradient Border for feature cards only */
+.feature-card::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4, #10b981, #f59e0b, #ef4444, #3b82f6);
+  background-size: 400% 400%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  animation: gradientShift 8s ease infinite;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::after {
+  opacity: 0.6;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Enhanced Code Editor Styles */
+.code-editor {
+  @apply bg-slate-800 border border-slate-700 rounded-lg font-mono text-sm;
+}
+
+/* Syntax Highlighting Styles */
+.syntax-highlighter {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.syntax-highlighter pre {
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.syntax-highlighter code {
+  background: transparent !important;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Line numbers synchronization */
+.line-numbers {
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.line-numbers::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbar for code editor */
+.modern-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modern-card::-webkit-scrollbar-track {
+  @apply bg-slate-800 rounded-full;
+}
+
+.modern-card::-webkit-scrollbar-thumb {
+  @apply bg-slate-600 rounded-full;
+}
+
+.modern-card::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500;
+}
+
+/* Floating animation for success states */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation for loading states */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Modern button enhancements */
+.modern-button {
+  @apply relative overflow-hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.modern-button:hover::before {
+  left: 100%;
+}
+
+/* Glass morphism effect */
+.glass-effect {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+/* Neon glow effect for active elements */
+.neon-glow {
+  box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor;
+}
+
+/* PWA Install Banner Styles */
+.pwa-banner {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #3b82f6 100%);
+  background-size: 200% 200%;
+  animation: gradientFlow 4s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Slide in animation for banner */
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-in {
+  animation-fill-mode: both;
+}
+
+.slide-in-from-top {
+  animation-name: slide-in-from-top;
+}
+
+/* Ensure content doesn't hide behind banner */
+.pwa-banner + * {
+  margin-top: 0;
+}
+
+/* Pulse animation for install button */
+@keyframes install-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
+}
+
+.install-button-pulse {
+  animation: install-pulse 2s infinite;
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .modern-card {
+    margin-bottom: 1rem;
+  }
+
+  .feature-card {
+    margin-bottom: 1rem;
+  }
+
+  /* Disable tilt on mobile for better touch experience */
+  .feature-card:hover {
+    transform: none;
+  }
+
+  /* Reduce padding on mobile */
+  .modern-card .p-6 {
+    padding: 1rem;
+  }
+
+  .feature-card .p-6 {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Tablet adjustments */
+  .grid {
+    gap: 1rem;
+  }
+
+  /* Stack grids on tablet */
+  .lg\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile adjustments */
+  .lg\:grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Smaller text on very small screens */
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+
+  .text-6xl {
+    font-size: 3rem;
+  }
+
+  .text-4xl {
+    font-size: 2rem;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+}
+
+/* Footer styles */
+.footer {
+  @apply bg-slate-900/80 backdrop-blur-sm border-t border-slate-800;
+}
+
+.footer-content {
+  @apply container mx-auto px-4 py-6 text-center;
+}
+
+.footer-text {
+  @apply text-slate-400 text-sm;
+}
+
+.footer-heart {
+  @apply text-red-400 animate-pulse;
+}
+
+.footer-name {
+  @apply text-blue-400 font-semibold hover:text-blue-300 transition-colors;
+}
+
+/* Code Editor Specific Styles */
+.code-editor-container {
+  position: relative;
+}
+
+.code-editor-textarea {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
+/* Ensure syntax highlighting is visible */
+.syntax-highlighter * {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Override any conflicting styles */
+.syntax-highlighter .token.comment,
+.syntax-highlighter .token.prolog,
+.syntax-highlighter .token.doctype,
+.syntax-highlighter .token.cdata {
+  color: #6a9955 !important;
+  font-style: italic;
+}
+
+.syntax-highlighter .token.punctuation {
+  color: #d4d4d4 !important;
+}
+
+.syntax-highlighter .token.property,
+.syntax-highlighter .token.tag,
+.syntax-highlighter .token.boolean,
+.syntax-highlighter .token.number,
+.syntax-highlighter .token.constant,
+.syntax-highlighter .token.symbol,
+.syntax-highlighter .token.deleted {
+  color: #b5cea8 !important;
+}
+
+.syntax-highlighter .token.selector,
+.syntax-highlighter .token.attr-name,
+.syntax-highlighter .token.string,
+.syntax-highlighter .token.char,
+.syntax-highlighter .token.builtin,
+.syntax-highlighter .token.inserted {
+  color: #ce9178 !important;
+}
+
+.syntax-highlighter .token.operator,
+.syntax-highlighter .token.entity,
+.syntax-highlighter .token.url,
+.syntax-highlighter .language-css .token.string,
+.syntax-highlighter .style .token.string {
+  color: #d4d4d4 !important;
+}
+
+.syntax-highlighter .token.atrule,
+.syntax-highlighter .token.attr-value,
+.syntax-highlighter .token.keyword {
+  color: #569cd6 !important;
+}
+
+.syntax-highlighter .token.function,
+.syntax-highlighter .token.class-name {
+  color: #dcdcaa !important;
+}
+
+.syntax-highlighter .token.regex,
+.syntax-highlighter .token.important,
+.syntax-highlighter .token.variable {
+  color: #d16969 !important;
+}
