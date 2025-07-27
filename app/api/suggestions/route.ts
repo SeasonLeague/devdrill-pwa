@@ -2,12 +2,12 @@ import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
 import { connectDB } from "@/lib/mongodb"
 import User from "@/models/User"
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenAI } from "@google/genai"
 
 // Force dynamic rendering for this route
 export const dynamic = "force-dynamic"
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,8 +28,6 @@ export async function GET(request: NextRequest) {
     if (!userData) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
-
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" })
 
     // Analyze user's progress and generate suggestions
     const completedTasks = userData.completedTasks || []
@@ -100,9 +98,16 @@ Focus on:
 5. Encouraging continued learning
 `
 
-    const result = await model.generateContent(prompt)
-    const response = await result.response
-    const text = response.text()
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-001",
+      contents: prompt,
+      config: {
+        maxOutputTokens: 1000,
+        temperature: 0.7,
+      },
+    })
+
+    const text = response.text
 
     // Extract JSON from the response
     const jsonMatch = text.match(/\{[\s\S]*\}/)

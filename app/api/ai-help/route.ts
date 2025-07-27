@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyToken } from "@/lib/auth"
-import { GoogleGenerativeAI } from "@google-generative-ai"
+import { GoogleGenAI } from "@google/genai"
 import { aiHelpSchema, validateAndSanitizeInput, sanitizeHtml } from "@/lib/validation"
 import { rateLimit, rateLimitConfigs } from "@/lib/rate-limiter"
 import { handleSecurityError, addSecurityHeaders } from "@/lib/security"
@@ -8,7 +8,7 @@ import { handleSecurityError, addSecurityHeaders } from "@/lib/security"
 // Force dynamic rendering for this route
 export const dynamic = "force-dynamic"
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 const limiter = rateLimit(rateLimitConfigs.aiHelp)
 
 export async function POST(request: NextRequest) {
@@ -37,14 +37,6 @@ export async function POST(request: NextRequest) {
 
     // Validate and sanitize input
     const { task, userCode, question } = validateAndSanitizeInput(aiHelpSchema, body)
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-pro",
-      generationConfig: {
-        maxOutputTokens: 1000, // Limit response length
-        temperature: 0.7,
-      },
-    })
 
     // Create safe prompt with sanitized inputs
     const sanitizedQuestion = sanitizeHtml(question)
@@ -77,9 +69,16 @@ Please provide a helpful explanation that:
 Keep your response concise, educational, and encouraging. Do not provide executable code solutions.
 `
 
-    const result = await model.generateContent(prompt)
-    const response = await result.response
-    let text = response.text()
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-001",
+      contents: prompt,
+      config: {
+        maxOutputTokens: 1000,
+        temperature: 0.7,
+      },
+    })
+
+    let text = response.text
 
     // Sanitize AI response to prevent any potential XSS
     text = sanitizeHtml(text)

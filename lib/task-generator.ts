@@ -1,6 +1,6 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenAI } from "@google/genai"
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! })
 
 interface Task {
   id: string
@@ -80,8 +80,6 @@ const skillLevelPrompts = {
 }
 
 export async function generateTask(skillLevel: string, completedTasks: string[] = []): Promise<Task> {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" })
-
   const levelConfig = skillLevelPrompts[skillLevel as keyof typeof skillLevelPrompts] || skillLevelPrompts.Beginner
   const randomTopic = levelConfig.topics[Math.floor(Math.random() * levelConfig.topics.length)]
 
@@ -147,9 +145,12 @@ Generate a beginner-friendly programming challenge now.
 `
 
   try {
-    const result = await model.generateContent(prompt)
-    const response = await result.response
-    const text = response.text()
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-001",
+      contents: prompt,
+    })
+
+    const text = response.text
 
     // Extract JSON from the response
     const jsonMatch = text.match(/\{[\s\S]*\}/)
